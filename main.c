@@ -166,7 +166,23 @@ int execLine(char* lineIn){
 
 		// unescape the current token and send it to the argument array
 		char* unEsc = unescape(curToken, stderr);
-		strcpy(tokenArr[curIndex], unEsc);
+
+		if(unEsc){
+			strcpy(tokenArr[curIndex], unEsc);
+		}
+
+		// if unEsc returns NULL, clean up and abandon ship
+		else{
+			free(unEsc);
+			for(int i = 0; i <= curIndex; i++){
+				free(tokenArr[i]);
+			}
+			free(curToken);
+			free(remainder);
+			free(tokenArr);
+			return 1;
+		}
+
 		free(unEsc);
 
 		// remove first argument from remainder, rinse and repeat
@@ -183,7 +199,23 @@ int execLine(char* lineIn){
 	tokenArr[curIndex] = malloc(254);
 
 	char* unEsc = unescape(remainder, stderr);
-	strcpy(tokenArr[curIndex], unEsc);
+
+	if(unEsc){
+		strcpy(tokenArr[curIndex], unEsc);
+	}
+
+	// same as above. If unescape returns NULL, clean up and return error code
+	else{
+		free(unEsc);
+		for(int i = 0; i <= curIndex; i++){
+			free(tokenArr[i]);
+		}
+		free(tokenArr);
+		free(curToken);
+		free(remainder);
+		return 1;
+	}
+
 	free(unEsc);
 
 	// add this thing to terminate our now-full argument array
