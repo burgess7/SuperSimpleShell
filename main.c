@@ -181,7 +181,10 @@ int execLine(char* lineIn){
 	// reallocate another index once more, fill it with the arg
 	tokenArr = realloc(tokenArr, indexCount * sizeof(*tokenArr));
 	tokenArr[curIndex] = malloc(254);
-	strcpy(tokenArr[curIndex], remainder);
+
+	char* unEsc = unescape(remainder, stderr);
+	strcpy(tokenArr[curIndex], unEsc);
+	free(unEsc);
 
 	// add this thing to terminate our now-full argument array
 	tokenArr[curIndex + 1] = (char *) 0;
