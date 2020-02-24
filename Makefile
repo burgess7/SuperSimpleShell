@@ -2,7 +2,7 @@
 SRCS = main.c utils.c
 
 # This line is the name of the program you are building
-BIN = simple_shell
+BIN = shell
 
 # Compiler flags to pass to the system's C compiler while building
 # the source files
